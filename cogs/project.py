@@ -25,6 +25,11 @@ class Project(commands.GroupCog, name="project"):
         try:
             guild_id = interaction.guild.id
 
+            if name.isdigit():
+                embed = create_embed(self.client, "warning", "Warning", f"The project name contains only a number, the name can't be compared to the id.")
+                await interaction.response.send_message(embed=embed)
+                return
+
             if self.project_exists(name, guild_id):
                 embed = create_embed(self.client,"info", "Info", f"Project with name '{name}' already exists.")
                 await interaction.response.send_message(embed = embed)
