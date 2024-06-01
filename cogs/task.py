@@ -5,11 +5,13 @@ from discord.ext import commands
 from discord import app_commands
 import datetime
 
+from preset import create_embed
+
 class Task(commands.GroupCog, name="task"):
     def __init__(self, client):
         self.client = client
         self.status = True
-        self.conn = sqlite3.connect('mydatabase.db')
+        self.conn = sqlite3.connect('db/mydatabase.db')
         self.cursor = self.conn.cursor()
 
     @app_commands.command(name="add", description="Add a new task")
@@ -18,8 +20,10 @@ class Task(commands.GroupCog, name="task"):
             created_at = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
             self.cursor.execute(f'''INSERT INTO tasks_{interaction.guild.id} (project_id, name, description, assigned_to, authorized_to, created_at, priority)
                                      VALUES (?, ?, ?, ?, ?, ?, ?)''', (project_id, name, description, assigned_to.id, authorized_to.id, created_at, priority))
+            task_id = self.cursor.lastrowid
             self.conn.commit()
-            await interaction.response.send_message("Task added successfully!")
+            embed = create_embed(self.client,"success", "Success", f"Task '{name}' added successfully. Task Id : {task_id}")
+            await interaction.response.send_message(embed = embed)
         except Exception as e:
             await interaction.response.send_message(f"An error occurred: {e}")
 

@@ -12,7 +12,7 @@ from preset import create_embed
 class Project(commands.GroupCog, name="project"):
     def __init__(self, client):
         self.client = client
-        self.conn = sqlite3.connect('mydatabase.db')
+        self.conn = sqlite3.connect('db/mydatabase.db')
         self.cursor = self.conn.cursor()
         self.status = True
 
@@ -36,9 +36,33 @@ class Project(commands.GroupCog, name="project"):
             self.cursor.execute(f'''INSERT INTO projects_{guild_id} (name, description, created_at, updated_at, owner) 
                                     VALUES (?, ?, ?, ?, ?)''', (name, description, current_time, current_time, str(interaction.user.id)))
             
+            project_id = self.cursor.lastrowid
             self.conn.commit()
             
-            embed = create_embed(self.client,"success", "Success", f"Project '{name}' created successfully.")
+            embed = create_embed(self.client,"success", "Success", f"Project '{name}' created successfully. Project Id : {project_id}")
+            await interaction.response.send_message(embed = embed)
+        except Exception as e:
+            embed = create_embed(self.client,"error", "Error", f"An error occurred: {e}")
+            await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(name="tasks", description="Show tasks for a project by name or Id")
+    async def show_tasks(self, interaction: discord.Interaction, query: str):
+        try:
+            guild_id = interaction.guild.id
+
+            self.cursor.execute(f'''SELECT id FROM projects_{guild_id} WHERE id=? OR name=?''', (query, query, ))
+            project = self.cursor.fetchone()
+            
+            if not project:
+                embed = create_embed(self.client,"info", "Info", f"No projects found with NAME or ID : '**{query}**'")
+                await interaction.response.send_message(embed=embed)
+                return
+
+            self.cursor.execute(f'''SELECT id, name FROM tasks_{guild_id} WHERE project_id=?''', (str(project[0]), ))
+            tasks = self.cursor.fetchall()
+
+            task_list = "\n".join([f"ID: {task[0]}, Name: {task[1]}" for task in tasks])
+            embed = create_embed(self.client,"success", "Success", f"{task_list}")
             await interaction.response.send_message(embed = embed)
         except Exception as e:
             embed = create_embed(self.client,"error", "Error", f"An error occurred: {e}")
