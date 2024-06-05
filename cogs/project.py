@@ -160,26 +160,12 @@ class Project(commands.GroupCog, name="project"):
                 embed_project.add_field(name=f"ID : {project[0]}", value="", inline=False)
                 embed_project.add_field(name=f"Name : {project[1]}", value="", inline=False)
                 embed_project.add_field(name=f"Description : {project[2]}", value="", inline=False)
-                # embed_project.add_field(name="Owner", value=owner.name, inline=False)
-                # if assigned_to_display:
-                    # embed_project.add_field(name="Assigned To", value=assigned_to_display, inline=False)
-                # if authorized_to_display:
-                    # embed_project.add_field(name="Authorized To", value=authorized_to_display, inline=False)
-                # if project[8] is not None:
-                    # embed_project.set_footer(text=f"Status : {project[8]}")
-                # else:
-                    # embed_project.set_footer(text=f"Status : None")
-                # embed_project.set_thumbnail(url=self.client.user.avatar.url)
+
                 if visible:
                     channelId = self.client.get_channel(int(interaction.channel.id))
                     await channelId.send(embed=embed_project)
                 else:
                     await interaction.followup.send(embed=embed_project)
-                
-                # if index == len(projects) - 1:
-                    # embed_project_last = discord.Embed(title="", color=0x7289DA)
-                    # embed_project_last.set_thumbnail(url=self.client.user.avatar.url)
-                    # await interaction.followup.send(embed=embed_project_last)
 
         except Exception as e:
             embed_error = create_embed(self.client, "error", "Error", f"An error occurred: {e}")
@@ -236,17 +222,6 @@ class Project(commands.GroupCog, name="project"):
         except Exception as e:
             embed = create_embed(self.client, "error", "Error", f"An error occurred: {e}")
             await interaction.response.send_message(embed=embed)
-
-    # @app_commands.command(name="add", description="Add users to a project")
-    # async def add_users_to_project(self, interaction: discord.Interaction, project_id: int, user: discord.User):
-    #     try:
-    #         self.cursor.execute('''UPDATE projects SET users=users||? WHERE id=?''', (str(user.id), project_id))
-    #         self.conn.commit()
-    #         embed = create_embed(self.client,"success", "Success", f"User added to project with ID '{project_id}' successfully.")
-    #         await interaction.response.send_message(f"embed=embed")
-    #     except Exception as e:
-    #         embed = create_embed(self.client,"error", "Error", f"An error occurred: {e}")
-    #         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="delete", description="Delete a project by ID")
     async def delete_project(self, interaction: discord.Interaction, project_id: int):

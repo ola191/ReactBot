@@ -100,17 +100,13 @@ class MyBot(commands.Bot):
 
     async def setup_hook(self):
         await load_all_cogs()
-
-        # guild_ids = [guild.id for guild in self.guilds]
         
         try:
             
             self.tree.copy_global_to(guild=MY_GUILD)
             self.tree.clear_commands(guild=MY_GUILD)
             await self.tree.sync()
-            # for guild_id in guild_ids:
-                # await self.tree.copy_global_to(guild=discord.Object(id=guild_id))
-                # await self.tree.sync(guild=discord.Object(id=guild_id))
+
             print(f"[{datetime.datetime.now()}] [\033[1;36mCONSOLE\033[0;0m]: Slash commands synchronized with guilds")
         except Exception as e:
             print(f"[{datetime.datetime.now()}] [\033[91mmERROR\033[0;0m]: {e}")

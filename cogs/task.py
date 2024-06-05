@@ -65,17 +65,6 @@ class Task(commands.GroupCog, name="task"):
         except Exception as e:
             await interaction.response.send_message(f"An error occurred: {e}")
 
-    # @app_commands.command(name="updatetask", description="Update a task")
-    # async def update_task(self, interaction: discord.Interaction, task_id: int, **kwargs):
-    #     try:
-    #         updates = ', '.join([f"{key} = ?" for key in kwargs])
-    #         values = tuple(kwargs.values()) + (task_id,)
-    #         self.cursor.execute(f'''UPDATE tasks_{interaction.guild.id} SET {updates} WHERE id = ?''', values)
-    #         self.conn.commit()
-    #         await interaction.response.send_message("Task updated successfully!")
-    #     except Exception as e:
-    #         await interaction.response.send_message(f"An error occurred: {e}")
-
     @app_commands.command(name="change", description="Change a task field")
     async def change(self, interaction: discord.Interaction, task_id: int, field: Literal['project_id', 'name', 'description', 'assigned_to', 'due_date', 'priority', 'progress_status', 'assigned_user_priority', 'authorized_to_change', 'comments', 'file_links', 'status'], action: Literal['add', 'remove', 'replace'], value: Union[str, None] = None, member: Union[discord.Member, None] = None):
         try:

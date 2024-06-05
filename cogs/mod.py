@@ -8,10 +8,6 @@ class Mod(commands.GroupCog, name="mod"):
         self.client = client
         self.status = True
 
-        # if not existing_cmd:
-        # self.ctx_menu = app_commands.ContextMenu(name='Report to Moderators a', callback=self.report_messagee)
-        # self.client.tree.add_command(self.ctx_menu)
-
     @app_commands.command(name="purge", description="Clears a specified number of messages optionally from a specific user.")
     async def purge(self, interaction: discord.Interaction, amount: int, member: discord.Member = None):
         if amount <= 0:
