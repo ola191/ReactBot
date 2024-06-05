@@ -8,6 +8,8 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
+from preset import create_embed
+
 
 class Report(commands.GroupCog, name="report"):
     def __init__(self, client):
@@ -103,7 +105,8 @@ class Report(commands.GroupCog, name="report"):
                         color=discord.Color.blurple()
                     )
                     await report_channel.send(embed=em)
-                    await interaction.response.send_message("Report sent successfully!", ephemeral=True)
+                    embed = create_embed(self.client, "success", "Success", f"Report sent successfully.")
+                    await interaction.response.send_message(embed=embed, ephemeral=True)
                 else:
                     await interaction.response.send_message("Report channel not found!", ephemeral=True)
             else:
