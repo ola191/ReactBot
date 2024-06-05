@@ -1,10 +1,13 @@
 import typing
+import datetime
+from typing import Literal
+
+import json
+
 import discord
 from discord.ext import commands
 from discord import app_commands
-import json
-import datetime
-from typing import Literal
+
 
 class Report(commands.GroupCog, name="report"):
     def __init__(self, client):
@@ -67,7 +70,6 @@ class Report(commands.GroupCog, name="report"):
             print(f"An error occurred while reporting a error issue: {e}")
             await interaction.response.send_message("An error occurred while reporting the error issue.", ephemeral=True)
 
-    
     @report_command.autocomplete("command")
     async def report_command_autocomplete(
         self,

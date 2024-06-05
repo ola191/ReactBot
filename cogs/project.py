@@ -1,11 +1,12 @@
+import datetime
 import asyncio
+from typing import Literal
+
+import sqlite3
+
 import discord
 from discord.ext import commands
 from discord import app_commands
-import sqlite3
-import datetime
-
-from typing import Literal
 
 from preset import create_embed
 
@@ -36,7 +37,6 @@ class Project(commands.GroupCog, name="project"):
                 return
 
             current_time = datetime.datetime.utcnow().isoformat()
-
 
             self.cursor.execute(f'''INSERT INTO projects_{guild_id} (name, description, created_at, updated_at, owner) 
                                     VALUES (?, ?, ?, ?, ?)''', (name, description, current_time, current_time, str(interaction.user.id)))
@@ -96,6 +96,7 @@ class Project(commands.GroupCog, name="project"):
                     embed.add_field(name="Name", value=project[1], inline=False)
                     embed.add_field(name="Description", value=project[2], inline=False)
                     embed.add_field(name="Owner", value=owner.name, inline=False)
+
                     if assigned_to_display != "":
                         embed.add_field(name="Assigned To", value=assigned_to_display, inline=False)
                     if  authorized_to_change_display != "":
@@ -273,8 +274,6 @@ class Project(commands.GroupCog, name="project"):
             error_embed = create_embed(self.client, "error", "Error", f"An error occurred: {e}")
             await interaction.followup.send(embed=error_embed)
 
-
-            
 async def setup(client):
     if Project(client).status:
         print(f"[{datetime.datetime.now()}] [\033[1;33mCONSOLE\033[0;0m]: Cog [\033[1;33m{Project.__name__}\033[0;0m] loaded : Status [\033[1;32mEnable\033[0;0m]")

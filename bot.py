@@ -1,42 +1,34 @@
-import asyncio
-import discord
-from discord.ext import commands
-from discord import app_commands
-import sqlite3
-import json
+
 import datetime
 import os
+import asyncio
 from typing import Literal, Optional
+
+import sqlite3
+import json
+
+import discord
+from discord.ext import commands
 
 from preset import create_embed
 
 with open('config.json', 'r') as f:
     config = json.load(f)
-
     token = config["token"]
-
     logChannelId = config["logChannelId"]
     guildId = config["GuildId"]
     reportChannelId = config["reportChannelId"]
-    
     botName = config["botName"]
-
-
 
 MY_GUILD = discord.Object(id=guildId)
 
 async def change_bot_status(guild_count, total_member):
     await client.wait_until_ready() 
-
     while not client.is_closed():
         await client.change_presence(activity=discord.Game(name="docs : projectBot.xyz"))
-
         await asyncio.sleep(4)
         await client.change_presence(activity=discord.Game(name="{} members in {} servers".format(total_member, guild_count)))
-
         await asyncio.sleep(4)
-
-
 
 class MyBot(commands.Bot):
     def __init__(self, *, intents: discord.Intents):
@@ -82,31 +74,28 @@ class MyBot(commands.Bot):
                                 users_notes TEXT,
                                 comments TEXT
                             )''')
+
     async def setup_database(self):
         self.conn = sqlite3.connect('db/mydatabase.db')
         self.cursor = self.conn.cursor()
-
         print(f"[{datetime.datetime.now()}] [\033[1;35mCONSOLE\033[0;0m]: Database [\033[1;35mSQLite\033[0;0m] setup.") 
 
-        
         try:
             for guild in self.guilds:
                 self.create_tables(guild.id)
             print(f"[{datetime.datetime.now()}] [\033[1;35mCONSOLE\033[0;0m]: tables [\033[1;35mSQLite\033[0;0m] created.")
         except Exception as e:
             print(f"[{datetime.datetime.now()}] [\033[91mERROR\033[0;0m]: {e}")
-
+        
         self.conn.commit()
 
     async def setup_hook(self):
         await load_all_cogs()
         
         try:
-            
             self.tree.copy_global_to(guild=MY_GUILD)
             self.tree.clear_commands(guild=MY_GUILD)
             await self.tree.sync()
-
             print(f"[{datetime.datetime.now()}] [\033[1;36mCONSOLE\033[0;0m]: Slash commands synchronized with guilds")
         except Exception as e:
             print(f"[{datetime.datetime.now()}] [\033[91mmERROR\033[0;0m]: {e}")
@@ -119,7 +108,6 @@ class MyBot(commands.Bot):
 intents = discord.Intents.all()
 client = MyBot(intents=intents)
 
-
 async def load_all_cogs():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
@@ -129,9 +117,8 @@ async def load_all_cogs():
 async def on_ready():
     try:
         await client.setup_database()
-            
         print(f"[{datetime.datetime.now()}] [\033[1;32mCONSOLE\033[0;0m]: {botName} ready")
-
+        
         log_channel = client.get_channel(int(logChannelId))
         now = datetime.datetime.now(datetime.timezone.utc)
         embed = create_embed(client, "info", "Info", f"> {botName} ready", fields={"date :" : f"> {now.strftime('%Y-%m-%d %H:%M:%S')}"})  
@@ -141,7 +128,6 @@ async def on_ready():
         await log_channel.send(embed=embed)
     except BaseException as error:
         print('An exception occurred: {}'.format(error))
-
 
 @client.command()
 @commands.is_owner()
@@ -158,12 +144,9 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
             synced = []
         else:
             synced = await ctx.bot.tree.sync()
-
-        await ctx.send(
-            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
-        )
+        await ctx.send(f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}") 
         return
-
+    
     ret = 0
     for guild in guilds:
         try:

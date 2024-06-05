@@ -1,9 +1,11 @@
-import sqlite3
+import datetime
 from typing import Literal, Union
+
+import sqlite3
+
 import discord
 from discord.ext import commands
 from discord import app_commands
-import datetime
 
 from preset import create_embed
 
@@ -18,8 +20,7 @@ class Task(commands.GroupCog, name="task"):
     async def add_task(self, interaction: discord.Interaction, project_id: int, name: str, description: str, assigned_to: discord.Member, authorized_to_change: discord.Member, priority: int):
         try:
             created_at = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-            self.cursor.execute(f'''INSERT INTO tasks_{interaction.guild.id} (project_id, name, description, assigned_to, authorized_to_change, created_at, priority)
-                                     VALUES (?, ?, ?, ?, ?, ?, ?)''', (project_id, name, description, assigned_to.id, authorized_to_change.id, created_at, priority))
+            self.cursor.execute(f'''INSERT INTO tasks_{interaction.guild.id} (project_id, name, description, assigned_to, authorized_to_change, created_at, priority) VALUES (?, ?, ?, ?, ?, ?, ?)''', (project_id, name, description, assigned_to.id, authorized_to_change.id, created_at, priority))
             task_id = self.cursor.lastrowid
             self.conn.commit()
             embed = create_embed(self.client,"success", "Success", f"Task '{name}' added successfully. Task Id : {task_id}")
@@ -36,8 +37,7 @@ class Task(commands.GroupCog, name="task"):
             tasks = self.cursor.fetchall()
 
             if tasks:
-                for task in tasks:
-                    
+                for task in tasks:                    
                     assigned_to = interaction.guild.get_member(task[8])
                     authorized_to_change = interaction.guild.get_member(task[9])
 
@@ -105,8 +105,6 @@ class Task(commands.GroupCog, name="task"):
 
         except Exception as e:
             await interaction.response.send_message(f"An error occurred: {e}")
-
-
 
 async def setup(client):
     if Task(client).status:
