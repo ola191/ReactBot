@@ -46,7 +46,7 @@ class MyBot(commands.Bot):
                                 created_at TEXT,
                                 updated_at TEXT,
                                 priority TEXT,
-                                status TEXT
+                                status TEXT,
                                 assigned_to TEXT,
                                 authorized_to_change TEXT
                                 start_date TEXT,

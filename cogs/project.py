@@ -82,7 +82,7 @@ class Project(commands.GroupCog, name="project"):
             if projects:
                 embed = discord.Embed(title="Projects found", color=0x7289DA)
                 for project in projects:
-                    owner = await self.client.fetch_user(int(project[12]))
+                    owner = await self.client.fetch_user(int(project[11]))
                     assigned_to_ids = project[7].split(",") if project[5] else []
                     authorized_to_change_ids = project[8].split(",") if project[7] else []
 
