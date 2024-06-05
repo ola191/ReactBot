@@ -47,31 +47,41 @@ class MyBot(commands.Bot):
 
     def create_tables(self, guild_id):
         self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS projects_{guild_id}  
-                                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    name TEXT,
-                                    description TEXT,
-                                    created_at TEXT,
-                                    updated_at TEXT,
-                                    assigned_to TEXT,
-                                    owner TEXT,
-                                    authorized_to TEXT,
-                                    status TEXT)''') 
+                                (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                name TEXT,
+                                description TEXT,
+                                created_at TEXT,
+                                updated_at TEXT,
+                                priority TEXT,
+                                status TEXT
+                                assigned_to TEXT,
+                                authorized_to_change TEXT
+                                start_date TEXT,
+                                due_date TEXT,
+                                progress_status TEXT,
+                                owner TEXT,
+                                comments TEXT
+                                )
+                            ''') 
         self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS tasks_{guild_id}
-                                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    project_id INTEGER,
-                                    name TEXT,
-                                    description TEXT,
-                                    assigned_to TEXT,
-                                    created_at TEXT,
-                                    updated_at TEXT,
-                                    due_date TEXT,
-                                    priority TEXT,
-                                    progress_status TEXT,
-                                    assigned_user_priority TEXT,
-                                    authorized_to TEXT,
-                                    comments TEXT,
-                                    file_links TEXT,
-                                    status TEXT)''')
+                                (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                project_id INTEGER,
+                                name TEXT,
+                                description TEXT,
+                                created_at TEXT,
+                                updated_at TEXT,
+                                priority TEXT,
+                                status TEXT,
+                                assigned_to TEXT,
+                                authorized_to_change TEXT,
+                                start_date TEXT,
+                                due_date TEXT,
+                                progress_status TEXT,
+                                users_notes TEXT,
+                                comments TEXT
+                            )''')
     async def setup_database(self):
         self.conn = sqlite3.connect('db/mydatabase.db')
         self.cursor = self.conn.cursor()
