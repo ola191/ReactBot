@@ -37,8 +37,10 @@ class Task(commands.GroupCog, name="task"):
 
             if tasks:
                 for task in tasks:
-                    assigned_to = interaction.guild.get_member(task[4])
-                    authorized_to = interaction.guild.get_member(task[11])
+                    
+                    assigned_to = interaction.guild.get_member(task[8])
+                    authorized_to = interaction.guild.get_member(task[9])
+
                     embed = discord.Embed(title="Task Information", color=0x7289DA)
                     embed.add_field(name="ID", value=task[0], inline=False)
                     embed.add_field(name="Project ID", value=task[1], inline=False)
@@ -46,8 +48,8 @@ class Task(commands.GroupCog, name="task"):
                     embed.add_field(name="Description", value=task[3], inline=False)
                     embed.add_field(name="Assigned To", value=assigned_to.name if assigned_to else "Unknown", inline=False)
                     embed.add_field(name="Authorized To", value=authorized_to.name if authorized_to else "Unknown", inline=False)
-                    embed.add_field(name="Created At", value=task[5], inline=False)
-                    embed.add_field(name="Priority", value=task[8], inline=False)
+                    embed.add_field(name="Created At", value=task[4], inline=False)
+                    embed.add_field(name="Priority", value=task[6], inline=False)
                     await interaction.response.send_message(embed=embed)
             else:
                 await interaction.response.send_message("No tasks found.")

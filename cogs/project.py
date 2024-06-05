@@ -82,12 +82,12 @@ class Project(commands.GroupCog, name="project"):
             if projects:
                 embed = discord.Embed(title="Projects found", color=0x7289DA)
                 for project in projects:
-                    owner = await self.client.fetch_user(int(project[6]))
-                    assigned_to_ids = project[5].split(",") if project[5] else []
-                    authorized_to_ids = project[7].split(",") if project[7] else []
+                    owner = await self.client.fetch_user(int(project[12]))
+                    assigned_to_ids = project[7].split(",") if project[5] else []
+                    authorized_to_change_ids = project[8].split(",") if project[7] else []
 
                     assigned_to_names = [await self.client.fetch_user(int(user_id)) for user_id in assigned_to_ids]
-                    authorized_to_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_ids]
+                    authorized_to_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_change_ids]
 
                     assigned_to_display = ", ".join([user.name for user in assigned_to_names])
                     authorized_to_display = ", ".join([user.name for user in authorized_to_names])
@@ -146,12 +146,12 @@ class Project(commands.GroupCog, name="project"):
             
             for index, project in enumerate(projects[start_index:end_index], start=start_index):
                 
-                owner = await self.client.fetch_user(int(project[6]))
-                assigned_to_ids = project[5].split(",") if project[5] else []
-                authorized_to_ids = project[7].split(",") if project[7] else []
+                owner = await self.client.fetch_user(int(project[12]))
+                assigned_to_ids = project[7].split(",") if project[5] else []
+                authorized_to_change_ids = project[8].split(",") if project[7] else []
 
                 assigned_to_names = [await self.client.fetch_user(int(user_id)) for user_id in assigned_to_ids]
-                authorized_to_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_ids]
+                authorized_to_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_change_ids]
 
                 assigned_to_display = ", ".join([user.name for user in assigned_to_names])
                 authorized_to_display = ", ".join([user.name for user in authorized_to_names])
