@@ -29,10 +29,10 @@ async def change_bot_status(guild_count, total_member):
     await client.wait_until_ready() 
 
     while not client.is_closed():
-        await client.change_presence(activity=discord.Game(name="docs : projectBot.xyz"), status=discord.Status.idle)
+        await client.change_presence(activity=discord.Game(name="docs : projectBot.xyz"))
 
         await asyncio.sleep(4)
-        await client.change_presence(activity=discord.Game(name="{} members in {} servers".format(total_member, guild_count)), status=discord.Status.online)
+        await client.change_presence(activity=discord.Game(name="{} members in {} servers".format(total_member, guild_count)))
 
         await asyncio.sleep(4)
 
