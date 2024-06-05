@@ -105,6 +105,8 @@ class Help(commands.GroupCog, name="help"):
         for field, description in fields_description.items():
             em.add_field(name=field, value=description, inline=False)
 
+        em.set_footer(text="Support Server - https://discord.gg/2eqhnRPeyU \nProjectBot made with ❤️ by Olcia")
+
         await interaction.response.send_message(embed=em)
 
 async def setup(client):
