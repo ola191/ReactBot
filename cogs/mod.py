@@ -24,18 +24,16 @@ class Mod(commands.GroupCog, name="mod"):
             return
 
         try:
-            if not member:
-                deleted_messages = await interaction.channel.purge(limit=amount, bulk=False)
-            else:
-                deleted_messages = await interaction.channel.purge(limit=amount, check=lambda m: m.author == member if member else None, bulk=False)
 
-            if member:
-                await interaction.response.send_message(f"Deleted {len(deleted_messages)} messages for {member.display_name}.", ephemeral=True)
+            await interaction.response.defer()
+
+            if not member:
+                await interaction.channel.purge(limit=amount, bulk=False)
             else:
-                await interaction.response.send_message(f"Deleted {len(deleted_messages)} messages.", ephemeral=True)
-        except discord.errors.NotFound:
-            print("Interaction not found or expired. Ignoring the command.")
-            await interaction.response.send_message(f"Deleted {len(deleted_messages)} messages.", ephemeral=True)
+                await interaction.channel.purge(limit=amount, check=lambda m: m.author == member if member else None, bulk=False)
+
+        except discord.errors.NotFound as error:
+            print(f'An exception occurred: {error}')
 
         except Exception as error:
             print(f'An exception occurred: {error}')
