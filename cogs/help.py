@@ -68,9 +68,12 @@ class Help(commands.GroupCog, name="help"):
                 "created_at": "Creation date of the project",
                 "updated_at": "Last update date of the project",
                 "assigned_to": "People assigned to the project, without the possibility of intervening in the project",
+                "authorized_to_change": "People authorized to change the project, with the possibility of intervening in the project",
+                "start_date": "Start date of the project",
+                "due_date": "Due date of the project",
+                "progress_status": "Progress status of the project",
                 "owner": "Owner of the project, only the owner can delete the project",
-                "authorized_to": "People authorized for the project, with the possibility of intervening in the project",
-                "status": "Status of the project"
+                "comments": "Comments about the project"
             }
         else:  # task
             fields_description = {
@@ -78,17 +81,17 @@ class Help(commands.GroupCog, name="help"):
                 "project_id": "Identifier of the related project",
                 "name": "Name of the task",
                 "description": "Description of the task",
-                "assigned_to": "People assigned to the task, without the possibility of intervening in the task",
                 "created_at": "Creation date of the task",
                 "updated_at": "Last update date of the task",
-                "due_date": "Due date of the task",
                 "priority": "Priority of the task",
+                "status": "Status of the task",
+                "assigned_to": "People assigned to the task, without the possibility of intervening in the task",
+                "authorized_to_change": "People authorized to change the task, with the possibility of intervening in the task",
+                "start_date": "Start date of the task",
+                "due_date": "Due date of the task",
                 "progress_status": "Progress status of the task",
-                "assigned_user_priority": "Priority assigned by the user",
-                "authorized_to": "People authorized to the task, with the possibility of intervening in the task",
-                "comments": "Comments about the task",
-                "file_links": "Links to files related to the task",
-                "status": "Status of the task"
+                "users_notes": "Custom notes about users",
+                "comments": "Comments about the task"
             }
 
         em = discord.Embed(
