@@ -87,10 +87,10 @@ class Project(commands.GroupCog, name="project"):
                     authorized_to_change_ids = project[8].split(",") if project[7] else []
 
                     assigned_to_names = [await self.client.fetch_user(int(user_id)) for user_id in assigned_to_ids]
-                    authorized_to_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_change_ids]
+                    authorized_to_change_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_change_ids]
 
                     assigned_to_display = ", ".join([user.name for user in assigned_to_names])
-                    authorized_to_display = ", ".join([user.name for user in authorized_to_names])
+                    authorized_to_change_display = ", ".join([user.name for user in authorized_to_change_names])
 
                     embed.add_field(name="ID", value=project[0], inline=False)
                     embed.add_field(name="Name", value=project[1], inline=False)
@@ -98,8 +98,8 @@ class Project(commands.GroupCog, name="project"):
                     embed.add_field(name="Owner", value=owner.name, inline=False)
                     if assigned_to_display != "":
                         embed.add_field(name="Assigned To", value=assigned_to_display, inline=False)
-                    if  authorized_to_display != "":
-                        embed.add_field(name="Authorized To", value=authorized_to_display, inline=False)
+                    if  authorized_to_change_display != "":
+                        embed.add_field(name="Authorized To", value=authorized_to_change_display, inline=False)
                     if project[8] is not None:
                         embed.set_footer(text=f"Status : {project[8]}")
                     else:
@@ -151,10 +151,10 @@ class Project(commands.GroupCog, name="project"):
                 authorized_to_change_ids = project[8].split(",") if project[7] else []
 
                 assigned_to_names = [await self.client.fetch_user(int(user_id)) for user_id in assigned_to_ids]
-                authorized_to_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_change_ids]
+                authorized_to_change_names = [await self.client.fetch_user(int(user_id)) for user_id in authorized_to_change_ids]
 
                 assigned_to_display = ", ".join([user.name for user in assigned_to_names])
-                authorized_to_display = ", ".join([user.name for user in authorized_to_names])
+                authorized_to_change_display = ", ".join([user.name for user in authorized_to_change_names])
 
                 embed_project = discord.Embed(title="", color=0x7289DA)
                 embed_project.add_field(name=f"ID : {project[0]}", value="", inline=False)
@@ -186,13 +186,13 @@ class Project(commands.GroupCog, name="project"):
             await interaction.response.send_message(embed=embed_error)
 
     @app_commands.command(name="change", description="Change project details")
-    async def change_project(self, interaction: discord.Interaction, project_id: int, field: Literal['name', 'description', 'status', 'assigned_to', 'owner', 'authorized_to'], action: Literal["add", "remove", "replace"], value: str = None, member: discord.Member = None):
+    async def change_project(self, interaction: discord.Interaction, project_id: int, field: Literal['name', 'description', 'status', 'assigned_to', 'owner', 'authorized_to_change'], action: Literal["add", "remove", "replace"], value: str = None, member: discord.Member = None):
         try:
             guild_id = interaction.guild.id
             self.cursor.execute(f'''SELECT {field} FROM projects_{guild_id} WHERE id=?''', (project_id,))
             current_value = self.cursor.fetchone()[0]
 
-            if field in ['assigned_to', 'owner', 'authorized_to']:
+            if field in ['assigned_to', 'owner', 'authorized_to_change']:
                 if member is None:
                     embed = create_embed(self.client, "error", "Error", f"You must specify a user to add, remove, or replace.")
                     await interaction.response.send_message(embed=embed)
