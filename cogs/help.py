@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-class Help(commands.GroupCog, name="help"):
+class React(commands.GroupCog, name="help"):
     def __init__(self, client):
         self.client = client
         self.status = True
@@ -54,64 +54,14 @@ class Help(commands.GroupCog, name="help"):
                     cmd_with_args = format_command_with_args(cmd)
                     em.add_field(name=cmd_with_args, value=cmd.description if cmd.description else "No description provided.", inline=False)
         
-        em.set_footer(text="Support Server - https://discord.gg/2eqhnRPeyU \nProjectBot made with ❤️ by Olcia")
+        em.set_footer(text="Support Server - https://discord.gg/2eqhnRPeyU \nReactBot made with ❤️ by Olcia")
 
         await interaction.response.send_message(embed=em)
 
-    @app_commands.command(name="fields", description="Displays fields for projects or tasks")
-    async def fields(self, interaction: discord.Interaction, category: Literal['project', 'task']):
-        if category == 'project':
-            fields_description = {
-                "id": "Unique identifier of the project",
-                "name": "Name of the project",
-                "description": "Description of the project",
-                "created_at": "Creation date of the project",
-                "updated_at": "Last update date of the project",
-                "assigned_to": "People assigned to the project, without the possibility of intervening in the project",
-                "authorized_to_change": "People authorized to change the project, with the possibility of intervening in the project",
-                "start_date": "Start date of the project",
-                "due_date": "Due date of the project",
-                "progress_status": "Progress status of the project",
-                "owner": "Owner of the project, only the owner can delete the project",
-                "comments": "Comments about the project"
-            }
-        else:  # task
-            fields_description = {
-                "id": "Unique identifier of the task",
-                "project_id": "Identifier of the related project",
-                "name": "Name of the task",
-                "description": "Description of the task",
-                "created_at": "Creation date of the task",
-                "updated_at": "Last update date of the task",
-                "priority": "Priority of the task",
-                "status": "Status of the task",
-                "assigned_to": "People assigned to the task, without the possibility of intervening in the task",
-                "authorized_to_change": "People authorized to change the task, with the possibility of intervening in the task",
-                "start_date": "Start date of the task",
-                "due_date": "Due date of the task",
-                "progress_status": "Progress status of the task",
-                "users_notes": "Custom notes about users",
-                "comments": "Comments about the task"
-            }
-
-        em = discord.Embed(
-            title=f"**Fields for {category.capitalize()}**",
-            color=discord.Color.blurple()
-        )
-        em.set_thumbnail(
-            url=self.client.user.avatar.url
-        )
-
-        for field, description in fields_description.items():
-            em.add_field(name=field, value=description, inline=False)
-
-        em.set_footer(text="Support Server - https://discord.gg/2eqhnRPeyU \nProjectBot made with ❤️ by Olcia")
-
-        await interaction.response.send_message(embed=em)
-
+   
 async def setup(client):
-    if Help(client).status:
-        print(f"[{datetime.datetime.now()}] [\033[1;33mCONSOLE\033[0;0m]: Cog [\033[1;33m{Help.__name__}\033[0;0m] loaded : Status [\033[1;32mEnable\033[0;0m]")
-        await client.add_cog(Help(client))
+    if React(client).status:
+        print(f"[{datetime.datetime.now()}] [\033[1;33mCONSOLE\033[0;0m]: Cog [\033[1;33m{React.__name__}\033[0;0m] loaded : Status [\033[1;32mEnable\033[0;0m]")
+        await client.add_cog(React(client))
     else:
-        print(f"[{datetime.datetime.now()}] [\033[1;33mCONSOLE\033[0;0m]: Cog [\033[1;33m{Help.__name__}\033[0;0m] loaded : Status [\033[1;31mUnable\033[0;0m]")
+        print(f"[{datetime.datetime.now()}] [\033[1;33mCONSOLE\033[0;0m]: Cog [\033[1;33m{React.__name__}\033[0;0m] loaded : Status [\033[1;31mUnable\033[0;0m]")

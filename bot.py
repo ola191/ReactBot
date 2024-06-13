@@ -37,43 +37,20 @@ class MyBot(commands.Bot):
         self.remove_command("help")
         self.reportChannelId = reportChannelId
 
-    def create_tables(self, guild_id):
-        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS projects_{guild_id}  
+    def create_table(self, guild_id):
+        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS reactions_{guild_id}  
                                 (
                                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                name TEXT,
-                                description TEXT,
-                                created_at TEXT,
-                                updated_at TEXT,
-                                priority TEXT,
-                                status TEXT,
-                                assigned_to TEXT,
-                                authorized_to_change TEXT
-                                start_date TEXT,
-                                due_date TEXT,
-                                progress_status TEXT,
-                                owner TEXT,
-                                comments TEXT
+                                message_id INTEGER,
+                                user_id INTEGER,
+                                emoji TEXT,
+                                action TEXT,
+                                timestamp TEXT,
+                                duration TEXT,
+                                delete_time TEXT,
+                                created_at TEXT
                                 )
                             ''') 
-        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS tasks_{guild_id}
-                                (
-                                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                project_id INTEGER,
-                                name TEXT,
-                                description TEXT,
-                                created_at TEXT,
-                                updated_at TEXT,
-                                priority TEXT,
-                                status TEXT,
-                                assigned_to TEXT,
-                                authorized_to_change TEXT,
-                                start_date TEXT,
-                                due_date TEXT,
-                                progress_status TEXT,
-                                users_notes TEXT,
-                                comments TEXT
-                            )''')
 
     async def setup_database(self):
         self.conn = sqlite3.connect('db/mydatabase.db')

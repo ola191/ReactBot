@@ -23,7 +23,7 @@ def create_embed(client: discord.Client, embed_type: str, title: str, descriptio
             embed.add_field(name=name, value=value, inline=False)
 
     if footer:
-        embed.set_footer(text="Support Server - https://discord.gg/2eqhnRPeyU \nProjectBot made with ❤️ by Olcia")
+        embed.set_footer(text="Support Server - https://discord.gg/2eqhnRPeyU \nReactBot made with ❤️ by Olcia")
     
     if time:
         embed.timestamp=datetime.datetime.now(datetime.timezone.utc)
